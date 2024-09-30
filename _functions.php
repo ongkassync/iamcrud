@@ -80,4 +80,66 @@
         }
 
      }
+
+     // delete fruits
+     
+     function deleteFruit($fruitId){
+        $statement=dbConnection()->prepare("DELETE FROM 
+                                                   fruits 
+                                                   WHERE 
+                                                        fruit_id = :fruit_id");
+        $statement->execute([
+            'fruit_id' => $fruitId
+        ]);
+        
+        // confirm if the query is executed properly
+        
+        if ($statement){
+            return true;
+        } else{
+            return false;
+        }
+     }
+
+     // search fruits based on name
+     
+     function searchFruits($searchText){
+        $statement=dbConnection()->prepare("SELECT 
+                                             * 
+                                            FROM 
+                                            fruits 
+                                            WHERE 
+                                            fruit_name LIKE 
+                                            :fruit_name 
+                                            ORDER BY 
+                                            fruit_name 
+                                            ASC");
+
+        $statement->execute([
+            'fruit_name' => "%$searchText%"
+        ]);
+        
+        return $statement;
+     }
+
+     function searchFruitsCount($searchText){
+        $statement=dbConnection()->prepare("SELECT 
+                                             * 
+                                            FROM 
+                                            fruits 
+                                            WHERE 
+                                            fruit_name LIKE 
+                                            :fruit_name 
+                                            ORDER BY 
+                                            fruit_name 
+                                            ASC");
+
+        $statement->execute([
+            'fruit_name' => "%$searchText%"
+        ]);
+        
+        $count = $statement->rowCount();
+        
+        return $count;
+     }
 ?>
